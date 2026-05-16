@@ -7,133 +7,219 @@
 <style>{{STYLES}}</style>
 </head>
 <body>
+
 <header class="app-header">
   <div class="hdr-left">
-    <strong class="hdr-proyecto" data-bind="proyecto.nombre"></strong>
-    <span class="hdr-sep">·</span>
-    <span data-bind="proyecto.yacimiento"></span>
-    <span class="hdr-sep">·</span>
-    <span data-bind="proyecto.fecha"></span>
-    <span class="hdr-sep">·</span>
-    <span data-bind="proyecto.version"></span>
+    <div class="hdr-brand">
+      <div class="hdr-logo">S</div>
+      <span class="hdr-brand-name">SINTEC</span>
+      <span class="hdr-brand-sub">· Mediciones</span>
+    </div>
+    <nav class="hdr-nav">
+      <a class="hdr-nav-item active" data-nav="mapa">Mapa</a>
+      <a class="hdr-nav-item" data-nav="dashboard">Dashboard</a>
+    </nav>
   </div>
   <div class="hdr-right">
+    <span><span class="hdr-meta-label">Proyecto · </span><span data-bind="proyecto.nombre"></span></span>
+    <span class="hdr-sep">·</span>
+    <span><span class="hdr-meta-label">Yacimiento · </span><span data-bind="proyecto.yacimiento"></span></span>
+    <span class="hdr-sep">·</span>
+    <span class="mono" style="font-size:11.5px" data-bind="proyecto.fecha"></span>
+    <span class="hdr-sep mono" style="font-size:11.5px" data-bind="proyecto.version"></span>
     <span class="hdr-cliente" data-bind="proyecto.cliente"></span>
   </div>
 </header>
 
-<main id="view-map" class="view">
-  <div id="map-stage">
-    <div id="map-zoomer">
-      <img id="map-bg" alt="Mapa del yacimiento">
-      <svg id="points-layer" xmlns="http://www.w3.org/2000/svg"></svg>
+<div class="app-body" id="view-map">
+
+  <aside id="side-panel">
+    <div class="panel-filters">
+      <div class="search-wrap">
+        <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" style="color:var(--text-dim)">
+          <circle cx="7" cy="7" r="4.5"/><path d="M10.5 10.5L14 14" stroke-linecap="round"/>
+        </svg>
+        <input id="search" type="search" placeholder="Buscar pozo o ID…" autocomplete="off">
+      </div>
+
+      <div class="filter-group">
+        <label class="filter-label">Período</label>
+        <div class="chips" id="chips-fecha">
+          <button class="chip active" data-fecha="all">Todo</button>
+          <button class="chip" data-fecha="1y">1 año</button>
+          <button class="chip" data-fecha="6m">6 m</button>
+          <button class="chip" data-fecha="3m">3 m</button>
+        </div>
+      </div>
+
+      <div class="filter-group">
+        <label class="filter-label">Criticidad</label>
+        <div class="chips" id="chips-criticidad">
+          <button class="chip active" data-crit="all">Todas</button>
+          <button class="chip" data-crit="critico"><span class="chip-dot" style="background:var(--crit-critico)"></span>Crítica</button>
+          <button class="chip" data-crit="moderado"><span class="chip-dot" style="background:var(--crit-moderado)"></span>Moderada</button>
+          <button class="chip" data-crit="bajo"><span class="chip-dot" style="background:var(--crit-bajo)"></span>Baja</button>
+        </div>
+      </div>
     </div>
+
+    <div class="panel-list-head">
+      <span id="list-count">0 puntos</span>
+      <span>Ordenar por crítico</span>
+    </div>
+
+    <ul id="points-list"></ul>
+
+    <div class="panel-footer">
+      <button id="open-dashboard" class="btn-primary">Ver dashboard completo →</button>
+    </div>
+  </aside>
+
+  <div id="map-area">
+    <div id="map-stage">
+      <div id="map-zoomer">
+        <img id="map-bg" alt="Mapa del yacimiento">
+        <svg id="points-layer" xmlns="http://www.w3.org/2000/svg"></svg>
+      </div>
+    </div>
+
     <div id="map-controls">
       <button id="zoom-in" title="Acercar">+</button>
       <button id="zoom-out" title="Alejar">−</button>
       <button id="zoom-reset" title="Restablecer vista">⤢</button>
     </div>
+
+    <div id="map-legend">
+      <div class="legend-title">Criticidad (mm/año)</div>
+      <div class="legend-rows" id="legend-rows"></div>
+    </div>
+
+    <div id="map-scale">
+      <div class="scale-bar"></div>
+      <div class="scale-label" id="scale-label">— km</div>
+    </div>
+
+    <div id="map-attribution">Imágenes © Esri, Maxar, Earthstar Geographics</div>
+
+    <div id="point-popover" class="hidden" role="dialog"></div>
+  </div>
+</div>
+
+<section id="view-detail" class="overlay hidden">
+  <div class="overlay-subhead">
+    <div class="overlay-subhead-left">
+      <button class="btn-ghost" data-close="detail">← Mapa</button>
+      <div class="overlay-title" id="detail-title"></div>
+    </div>
+    <div class="overlay-actions">
+      <button id="export-csv" class="btn-ghost">Exportar CSV</button>
+    </div>
   </div>
 
-  <aside id="side-panel">
-    <div class="panel-fixed-top">
-      <input id="search" type="search" placeholder="Buscar pozo o ID…" autocomplete="off">
-      <div class="filter-group">
-        <label class="filter-label">Período</label>
-        <div class="chips" id="chips-fecha">
-          <button class="chip active" data-fecha="all">Todo</button>
-          <button class="chip" data-fecha="1y">Último año</button>
-          <button class="chip" data-fecha="6m">6 meses</button>
-          <button class="chip" data-fecha="3m">3 meses</button>
-        </div>
-      </div>
-      <div class="filter-group">
-        <label class="filter-label">Criticidad</label>
-        <div class="chips" id="chips-criticidad">
-          <button class="chip active" data-crit="all">Todas</button>
-          <button class="chip crit-critico" data-crit="critico">Crítica</button>
-          <button class="chip crit-moderado" data-crit="moderado">Moderada</button>
-          <button class="chip crit-bajo" data-crit="bajo">Baja</button>
-        </div>
-      </div>
-    </div>
-    <ul id="points-list" class="panel-scroll"></ul>
-    <div class="panel-fixed-bottom">
-      <button id="open-dashboard" class="btn-primary">Ver dashboard completo</button>
-    </div>
-  </aside>
-
-  <div id="point-popover" class="hidden" role="dialog"></div>
-
-  <div class="badge-sintec">SINTEC S.A.</div>
-</main>
-
-<section id="view-detail" class="view hidden">
-  <header class="overlay-header">
-    <button class="btn-back" data-close="detail">← Volver</button>
-    <h2 id="detail-title"></h2>
-  </header>
   <div class="detail-grid">
     <div class="detail-left">
-      <h3>Información del punto</h3>
-      <dl id="detail-info"></dl>
+      <div class="card">
+        <div class="card-title">Estado actual</div>
+        <div class="kpi-current">
+          <div class="kpi-val" id="detail-kpi-val">—</div>
+          <div class="kpi-unit" id="detail-kpi-unit">mm/año</div>
+        </div>
+        <div class="kv-grid" id="detail-kv"></div>
+      </div>
+
+      <div class="card" id="detail-fit-card">
+        <div class="card-title">Ajuste lineal (mínimos cuadrados)</div>
+        <div class="fit-grid" id="detail-fit"></div>
+      </div>
+
+      <div class="card notes-card">
+        <div class="card-title">Notas</div>
+        <div class="notes-body" id="detail-notes"></div>
+      </div>
     </div>
+
     <div class="detail-right">
       <div class="chart-card">
-        <h3>Velocidad de corrosión vs. fecha</h3>
-        <canvas id="detail-chart"></canvas>
-        <div id="detail-fit" class="fit-info"></div>
+        <div class="chart-card-head">
+          <div class="chart-card-title">Velocidad de corrosión vs. fecha</div>
+          <div class="chart-legend" id="detail-chart-legend"></div>
+        </div>
+        <div class="chart-host" id="detail-chart-host"></div>
       </div>
+
       <div class="table-card">
         <div class="table-card-head">
-          <h3>Mediciones</h3>
-          <button id="export-csv" class="btn-secondary">Exportar CSV</button>
+          <div class="title" id="detail-table-title">Historial de mediciones</div>
+          <div class="meta">Variación punto-a-punto (Δ y %)</div>
         </div>
-        <table id="detail-table">
-          <thead><tr><th>Fecha</th><th>Vel. corrosión (mm/año)</th></tr></thead>
+        <table class="measure-table" id="detail-table">
+          <thead>
+            <tr>
+              <th>Fecha</th>
+              <th class="right">Vel. (mm/año)</th>
+              <th class="right">Δ</th>
+              <th class="right">%</th>
+              <th>Criticidad</th>
+            </tr>
+          </thead>
           <tbody></tbody>
         </table>
-        <div class="notes-card">
-          <h4>Notas</h4>
-          <p id="detail-notes"></p>
-        </div>
       </div>
     </div>
   </div>
 </section>
 
-<section id="view-dashboard" class="view hidden">
-  <header class="overlay-header">
-    <button class="btn-back" data-close="dashboard">← Volver</button>
-    <h2>Dashboard completo</h2>
-  </header>
+<section id="view-dashboard" class="overlay hidden">
+  <div class="overlay-subhead">
+    <div class="overlay-subhead-left">
+      <button class="btn-ghost" data-close="dashboard">← Mapa</button>
+      <div class="overlay-title">
+        <span class="pozo" style="font-family:var(--sans);font-weight:500;font-size:16px">Dashboard completo</span>
+        <span class="id" id="dashboard-sub"></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="dashboard-kpis" id="dashboard-kpis"></div>
+
   <div class="dashboard-grid">
     <div class="chart-card">
-      <h3>Mediciones por período</h3>
-      <canvas id="agg-chart-1"></canvas>
-      <p class="chart-caption">Cantidad total de mediciones realizadas, agrupadas por trimestre.</p>
+      <div class="chart-card-head">
+        <div class="chart-card-title">Criticidad por campaña</div>
+      </div>
+      <div class="chart-host" id="agg-stacked-host"></div>
+      <p class="chart-caption">Distribución de las criticidades observadas en cada campaña de medición. Permite ver cómo evoluciona el balance entre puntos de baja, moderada y alta criticidad a lo largo de los ciclos sucesivos.</p>
     </div>
+
     <div class="chart-card">
-      <h3>Distribución de criticidad</h3>
-      <canvas id="agg-chart-2"></canvas>
-      <p class="chart-caption">Proporción de puntos en cada categoría de criticidad para el período evaluado.</p>
+      <div class="chart-card-head">
+        <div class="chart-card-title">Criticidad actual</div>
+      </div>
+      <div class="donut-row" id="donut-row"></div>
+      <p class="chart-caption">Distribución del estado actual de cada punto medido según la última medición registrada. La suma corresponde al total de puntos del proyecto, independientemente de cuándo fue la última campaña.</p>
     </div>
+
     <div class="chart-card">
-      <h3>Puntos con tendencia creciente</h3>
-      <canvas id="agg-chart-3"></canvas>
-      <p class="chart-caption">Puntos cuya regresión lineal indica aumento de la velocidad de corrosión en el tiempo.</p>
+      <div class="chart-card-head">
+        <div class="chart-card-title">Tendencia global</div>
+      </div>
+      <div class="chart-host" id="agg-global-host"></div>
+      <p class="chart-caption">Conjunto completo de mediciones del proyecto sobre el eje temporal. La recta corresponde al ajuste lineal por mínimos cuadrados sobre todas las observaciones agregadas, indicando la tendencia global del sistema.</p>
     </div>
+
     <div class="chart-card">
-      <h3>Dispersión global</h3>
-      <canvas id="agg-chart-4"></canvas>
-      <p class="chart-caption">Distribución de todas las mediciones del proyecto en el eje temporal.</p>
+      <div class="chart-card-head">
+        <div class="chart-card-title">Mediciones por campaña</div>
+        <div class="chart-card-meta" id="campaign-meta"></div>
+      </div>
+      <div class="chart-host" id="agg-campaign-host"></div>
+      <p class="chart-caption">Cantidad de mediciones realizadas en cada campaña. Las campañas se agrupan por semana representativa, asumiendo que las mediciones de un mismo ciclo se efectúan en días próximos.</p>
     </div>
   </div>
 </section>
 
 <script>window.__PROYECTO__ = {{DATA_JSON}};</script>
 <script>window.__MAPA_DATA_URI__ = "{{MAP_IMAGE_DATA_URI}}";</script>
-<script>{{CHART_JS}}</script>
 <script>{{PANZOOM_JS}}</script>
 <script>{{APP_JS}}</script>
 </body>

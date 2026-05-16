@@ -1,23 +1,23 @@
 #!/usr/bin/env node
 // Build script: inlines everything into a single self-contained HTML.
-// Vendors Chart.js and panzoom on first run (cached in src/vendor/).
+// Vendors panzoom on first run (cached in src/vendor/) and fetches a
+// satellite mosaic from Esri World Imagery on first run for the configured
+// bounds (cached in build/.tile-cache/).
 
 import { readFile, writeFile, mkdir, stat } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { buildSatelliteMap } from './mapfetch.mjs';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const SRC = resolve(ROOT, 'src');
 const DATA = resolve(ROOT, 'data');
 const DIST = resolve(ROOT, 'dist');
 const VENDOR = resolve(SRC, 'vendor');
+const TILE_CACHE = resolve(ROOT, 'build', '.tile-cache');
 
 const VENDOR_LIBS = [
-  {
-    name: 'chart.umd.min.js',
-    url: 'https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js',
-  },
   {
     name: 'panzoom.min.js',
     url: 'https://cdn.jsdelivr.net/npm/panzoom@9.4.3/dist/panzoom.min.js',
@@ -42,44 +42,49 @@ async function readVendor(name) {
   return await readFile(resolve(VENDOR, name), 'utf8');
 }
 
-async function imageToDataUri(path) {
-  if (!existsSync(path)) {
-    console.log(`  ! No se encontró ${path}, usando placeholder SVG.`);
-    return placeholderMapDataUri();
-  }
-  const buf = await readFile(path);
-  const ext = path.toLowerCase().split('.').pop();
-  const mime = ext === 'png' ? 'image/png' : ext === 'jpg' || ext === 'jpeg' ? 'image/jpeg' : 'image/png';
-  return `data:${mime};base64,${buf.toString('base64')}`;
-}
-
-function placeholderMapDataUri() {
+function placeholderMapDataUri(reason) {
   const w = 1600, h = 1000;
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}">
-    <defs>
-      <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
-        <stop offset="0%" stop-color="#3a2e22"/>
-        <stop offset="100%" stop-color="#1a1410"/>
-      </linearGradient>
-      <pattern id="grid" width="80" height="80" patternUnits="userSpaceOnUse">
-        <path d="M80 0 L0 0 0 80" fill="none" stroke="#4a3a2a" stroke-width="0.5"/>
-      </pattern>
-    </defs>
-    <rect width="${w}" height="${h}" fill="url(#g)"/>
-    <rect width="${w}" height="${h}" fill="url(#grid)"/>
-    <path d="M0 ${h * 0.35} Q ${w * 0.3} ${h * 0.45}, ${w * 0.5} ${h * 0.4} T ${w} ${h * 0.5}"
-          fill="none" stroke="#5a4a38" stroke-width="2" opacity="0.6"/>
-    <path d="M0 ${h * 0.7} Q ${w * 0.4} ${h * 0.6}, ${w * 0.6} ${h * 0.75} T ${w} ${h * 0.65}"
-          fill="none" stroke="#5a4a38" stroke-width="2" opacity="0.6"/>
-    <text x="${w / 2}" y="${h - 30}" fill="#6a5a48" font-family="sans-serif" font-size="20" text-anchor="middle" opacity="0.7">
-      MAPA DE REFERENCIA — Reemplazar data/mapa.png con imagen real del yacimiento
+    <rect width="${w}" height="${h}" fill="#1a1410"/>
+    <text x="${w / 2}" y="${h / 2}" fill="#a89167" font-family="sans-serif" font-size="22" text-anchor="middle">
+      Mapa no disponible
+    </text>
+    <text x="${w / 2}" y="${h / 2 + 30}" fill="#6a5a48" font-family="sans-serif" font-size="14" text-anchor="middle">
+      ${reason}
     </text>
   </svg>`;
-  return 'data:image/svg+xml;base64,' + Buffer.from(svg).toString('base64');
+  return { dataUri: 'data:image/svg+xml;base64,' + Buffer.from(svg).toString('base64'), width: w, height: h };
 }
 
 function sanitizeForScript(jsonStr) {
   return jsonStr.replace(/</g, '\\u003c').replace(/-->/g, '--\\>');
+}
+
+async function getMapImage(data) {
+  const bounds = data.mapa?.bounds;
+  if (!bounds || !['north', 'south', 'east', 'west'].every(k => typeof bounds[k] === 'number')) {
+    console.log('  ! No hay bounds válidos en proyecto.json, usando placeholder.');
+    return placeholderMapDataUri('Configurar mapa.bounds en proyecto.json');
+  }
+  const targetWidth = data.mapa.imageryTargetWidth || 1500;
+  console.log(`▸ Imagen satelital (Esri World Imagery)…`);
+  console.log(`  bounds  N=${bounds.north} S=${bounds.south} W=${bounds.west} E=${bounds.east}`);
+  console.log(`  target  ~${targetWidth}px de ancho`);
+  try {
+    const { buffer, mime, width, height, zoom } = await buildSatelliteMap({
+      bounds, targetWidth, cacheDir: TILE_CACHE, log: console.log,
+    });
+    const fmt = mime.split('/')[1].toUpperCase();
+    console.log(`  ✓ mosaico ${width}×${height}px @ z${zoom} (${(buffer.length / 1024).toFixed(0)} KB ${fmt})`);
+    return {
+      dataUri: `data:${mime};base64,` + buffer.toString('base64'),
+      width, height,
+    };
+  } catch (e) {
+    console.log(`  ✗ Falló la descarga del mosaico: ${e.message}`);
+    console.log(`    Usando placeholder. Probá de nuevo cuando tengas internet.`);
+    return placeholderMapDataUri(`Error: ${e.message}`);
+  }
 }
 
 async function build() {
@@ -87,29 +92,33 @@ async function build() {
   await ensureVendored();
   await mkdir(DIST, { recursive: true });
 
-  const [template, styles, app, chartJs, panzoomJs, dataJsonRaw] = await Promise.all([
+  const [template, styles, app, panzoomJs, dataJsonRaw] = await Promise.all([
     readFile(resolve(SRC, 'template.html'), 'utf8'),
     readFile(resolve(SRC, 'styles.css'), 'utf8'),
     readFile(resolve(SRC, 'app.js'), 'utf8'),
-    readVendor('chart.umd.min.js'),
     readVendor('panzoom.min.js'),
     readFile(resolve(DATA, 'proyecto.json'), 'utf8'),
   ]);
 
   const data = JSON.parse(dataJsonRaw);
-  const mapPath = resolve(DATA, data.mapa?.imagen || 'mapa.png');
-  const mapDataUri = await imageToDataUri(mapPath);
+  const map = await getMapImage(data);
 
   const title = `${data.proyecto.nombre} · ${data.proyecto.yacimiento} · ${data.proyecto.fecha}`;
 
-  let html = template
-    .replaceAll('{{TITLE}}', title)
-    .replaceAll('{{STYLES}}', styles)
-    .replaceAll('{{DATA_JSON}}', sanitizeForScript(JSON.stringify(data)))
-    .replaceAll('{{MAP_IMAGE_DATA_URI}}', mapDataUri)
-    .replaceAll('{{CHART_JS}}', chartJs)
-    .replaceAll('{{PANZOOM_JS}}', panzoomJs)
-    .replaceAll('{{APP_JS}}', app);
+  // Use function replacements so $$ / $& in inlined JS/CSS/JSON aren't
+  // interpreted as special replacement patterns by String.replaceAll.
+  const subs = {
+    '{{TITLE}}': title,
+    '{{STYLES}}': styles,
+    '{{DATA_JSON}}': sanitizeForScript(JSON.stringify(data)),
+    '{{MAP_IMAGE_DATA_URI}}': map.dataUri,
+    '{{PANZOOM_JS}}': panzoomJs,
+    '{{APP_JS}}': app,
+  };
+  let html = template;
+  for (const [key, val] of Object.entries(subs)) {
+    html = html.replaceAll(key, () => val);
+  }
 
   const slug = (s) => String(s).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
   const outName = `dashboard-${slug(data.proyecto.cliente || 'cliente')}-${slug(data.proyecto.yacimiento || 'sitio')}-${data.proyecto.fecha}-${data.proyecto.version}.html`;

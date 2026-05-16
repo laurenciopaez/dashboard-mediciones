@@ -4,7 +4,17 @@
       "Read(//c/Users/laure/.claude/projects/c--Users-laure-OneDrive-Escritorio-dashboard-mediciones/memory/**)",
       "PowerShell(node --version)",
       "PowerShell(npm run build)",
-      "PowerShell(Start-Process \"C:\\\\Users\\\\laure\\\\OneDrive\\\\Escritorio\\\\dashboard-mediciones\\\\dist\\\\dashboard-ypf-loma-campana-2026-05-16-v1.html\")"
+      "PowerShell(Start-Process \"C:\\\\Users\\\\laure\\\\OneDrive\\\\Escritorio\\\\dashboard-mediciones\\\\dist\\\\dashboard-ypf-loma-campana-2026-05-16-v1.html\")",
+      "PowerShell(npm install pngjs --save 2>&1)",
+      "PowerShell($bytes = [System.IO.File]::ReadAllBytes\\(\"build\\\\.tile-cache\\\\13_2530_5048.png\"\\) | Select-Object -First 8; $bytes | ForEach-Object { \"{0:X2}\" -f $_ } | Join-String -Separator ' ')",
+      "PowerShell($bytes = [System.IO.File]::ReadAllBytes\\(\"build\\\\.tile-cache\\\\13_2530_5048.png\"\\)[0..7]; [string]::Join\\(' ', \\($bytes | ForEach-Object { '{0:X2}' -f $_ }\\)\\))",
+      "PowerShell(npm install jpeg-js --save 2>&1)",
+      "PowerShell(Start-Process \"C:\\\\Users\\\\laure\\\\OneDrive\\\\Escritorio\\\\dashboard-mediciones\\\\dist\\\\dashboard-ypf-bandurria-sur-2026-05-16-v1.html\")",
+      "PowerShell($f = \"dist\\\\dashboard-ypf-bandurria-sur-2026-05-16-v1.html\"; $size = \\(Get-Item $f\\).Length; \"Tamaño: $\\($size/1KB\\) KB\"; \"Primeros 200 caracteres del head:\"; \\(Get-Content $f -TotalCount 1 -Raw\\).Substring\\(0, [Math]::Min\\(200, \\(Get-Content $f -Raw\\).Length\\)\\))",
+      "PowerShell($content = Get-Content \"dist\\\\dashboard-ypf-bandurria-sur-2026-05-16-v1.html\" -Raw; \"Linea 958:\"; \\($content -split \"`n\"\\)[957]; \"Linea 959:\"; \\($content -split \"`n\"\\)[958]; \"Linea 960:\"; \\($content -split \"`n\"\\)[959]; \"Linea 961:\"; \\($content -split \"`n\"\\)[960])",
+      "PowerShell(npm run build 2>&1)",
+      "PowerShell($content = Get-Content \"dist\\\\dashboard-ypf-bandurria-sur-2026-05-16-v1.html\" -Raw; \"Linea 959:\"; \\($content -split \"`n\"\\)[958]; \"Linea 960:\"; \\($content -split \"`n\"\\)[959])",
+      "PowerShell(node data\\\\_mock.mjs)"
     ],
     "additionalDirectories": [
       "c:\\Users\\laure\\.claude\\projects\\c--Users-laure-OneDrive-Escritorio-dashboard-mediciones\\memory"

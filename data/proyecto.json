@@ -1,109 +1,1448 @@
 {
   "proyecto": {
     "nombre": "Monitoreo Electroquímico",
-    "yacimiento": "Loma Campana",
+    "yacimiento": "Bandurria Sur",
     "cliente": "YPF",
     "fecha": "2026-05-16",
     "version": "v1"
   },
   "mapa": {
-    "imagen": "mapa.png",
     "bounds": {
-      "north": -38.50,
-      "south": -38.58,
-      "west": -68.60,
+      "north": -38.55,
+      "south": -38.88,
+      "west": -68.85,
       "east": -68.45
-    }
+    },
+    "imageryTargetWidth": 1500
   },
   "umbralesCriticidad": {
-    "bajo": 0.10,
-    "moderado": 0.30,
-    "critico": 0.50,
+    "bajo": 0.1,
+    "moderado": 0.3,
+    "critico": 0.5,
     "unidad": "mm/año"
+  },
+  "kpiHistorico": {
+    "fecha": "2025-12-31",
+    "etiqueta": "vs. Q4-25",
+    "pozos": 38,
+    "velPromedio": 0.318,
+    "mediciones": 197
   },
   "puntos": [
     {
       "id": "POZO-001",
-      "pozo": "LC-001",
-      "lat": -38.520,
-      "lon": -68.560,
-      "yacimiento": "Loma Campana",
-      "notas": "Pozo de referencia. Monitoreo trimestral según plan 2025.",
+      "pozo": "BS-001",
+      "lat": -38.654,
+      "lon": -68.5974,
+      "yacimiento": "Bandurria Sur",
+      "notas": {
+        "texto": "Tendencia ascendente detectada en último ciclo.",
+        "autor": "L. Pérez",
+        "fecha": "2025-12-01"
+      },
       "mediciones": [
-        { "fecha": "2024-03-12", "velCorrosion": 0.08 },
-        { "fecha": "2024-08-04", "velCorrosion": 0.11 },
-        { "fecha": "2025-02-18", "velCorrosion": 0.14 },
-        { "fecha": "2025-09-21", "velCorrosion": 0.17 },
-        { "fecha": "2026-04-10", "velCorrosion": 0.21 }
+        {
+          "fecha": "2024-03-04",
+          "velCorrosion": 0.522
+        },
+        {
+          "fecha": "2024-12-02",
+          "velCorrosion": 0.389
+        },
+        {
+          "fecha": "2025-09-01",
+          "velCorrosion": 0.289
+        },
+        {
+          "fecha": "2025-12-01",
+          "velCorrosion": 0.161
+        }
       ]
     },
     {
       "id": "POZO-002",
-      "pozo": "LC-014",
-      "lat": -38.535,
-      "lon": -68.510,
-      "yacimiento": "Loma Campana",
-      "notas": "Inhibidor reformulado en 2025-06. Observar respuesta.",
+      "pozo": "BS-002",
+      "lat": -38.7541,
+      "lon": -68.6873,
+      "yacimiento": "Bandurria Sur",
+      "notas": {
+        "texto": "Pozo de referencia. Monitoreo regular según plan.",
+        "autor": "F. Liporace",
+        "fecha": "2025-12-01"
+      },
       "mediciones": [
-        { "fecha": "2024-01-15", "velCorrosion": 0.42 },
-        { "fecha": "2024-07-02", "velCorrosion": 0.48 },
-        { "fecha": "2025-01-19", "velCorrosion": 0.55 },
-        { "fecha": "2025-07-11", "velCorrosion": 0.39 },
-        { "fecha": "2026-02-22", "velCorrosion": 0.31 }
+        {
+          "fecha": "2024-09-02",
+          "velCorrosion": 0.147
+        },
+        {
+          "fecha": "2024-12-02",
+          "velCorrosion": 0.148
+        },
+        {
+          "fecha": "2025-06-02",
+          "velCorrosion": 0.142
+        },
+        {
+          "fecha": "2025-09-01",
+          "velCorrosion": 0.138
+        },
+        {
+          "fecha": "2025-12-01",
+          "velCorrosion": 0.152
+        }
       ]
     },
     {
       "id": "POZO-003",
-      "pozo": "LC-027",
-      "lat": -38.555,
-      "lon": -68.540,
-      "yacimiento": "Loma Campana",
-      "notas": "Punto crítico identificado en informe Q1 2026. Requiere intervención.",
+      "pozo": "BS-003",
+      "lat": -38.5959,
+      "lon": -68.8314,
+      "yacimiento": "Bandurria Sur",
+      "notas": {
+        "texto": "",
+        "autor": "",
+        "fecha": ""
+      },
       "mediciones": [
-        { "fecha": "2024-05-20", "velCorrosion": 0.31 },
-        { "fecha": "2024-11-08", "velCorrosion": 0.44 },
-        { "fecha": "2025-05-14", "velCorrosion": 0.58 },
-        { "fecha": "2026-01-09", "velCorrosion": 0.71 }
+        {
+          "fecha": "2024-06-03",
+          "velCorrosion": 0.427
+        },
+        {
+          "fecha": "2024-09-02",
+          "velCorrosion": 0.212
+        },
+        {
+          "fecha": "2024-12-02",
+          "velCorrosion": 0.426
+        },
+        {
+          "fecha": "2025-03-03",
+          "velCorrosion": 0.503
+        },
+        {
+          "fecha": "2025-06-02",
+          "velCorrosion": 0.34
+        },
+        {
+          "fecha": "2025-09-01",
+          "velCorrosion": 0.201
+        },
+        {
+          "fecha": "2025-12-01",
+          "velCorrosion": 0.523
+        },
+        {
+          "fecha": "2026-03-02",
+          "velCorrosion": 0.569
+        }
       ]
     },
     {
       "id": "POZO-004",
-      "pozo": "LC-033",
-      "lat": -38.512,
-      "lon": -68.490,
-      "yacimiento": "Loma Campana",
-      "notas": "",
+      "pozo": "BS-004",
+      "lat": -38.6993,
+      "lon": -68.512,
+      "yacimiento": "Bandurria Sur",
+      "notas": {
+        "texto": "Tendencia ascendente detectada en último ciclo.",
+        "autor": "F. Liporace",
+        "fecha": "2025-12-01"
+      },
       "mediciones": [
-        { "fecha": "2025-10-05", "velCorrosion": 0.09 }
+        {
+          "fecha": "2025-03-03",
+          "velCorrosion": 0.269
+        },
+        {
+          "fecha": "2025-09-01",
+          "velCorrosion": 0.357
+        },
+        {
+          "fecha": "2025-12-01",
+          "velCorrosion": 0.433
+        }
       ]
     },
     {
       "id": "POZO-005",
-      "pozo": "LC-041",
-      "lat": -38.565,
-      "lon": -68.475,
-      "yacimiento": "Loma Campana",
-      "notas": "Comportamiento estable. Validado contra cupones de pérdida de peso.",
+      "pozo": "BS-005",
+      "lat": -38.8113,
+      "lon": -68.8363,
+      "yacimiento": "Bandurria Sur",
+      "notas": {
+        "texto": "Variación atípica. Validar metodología en próxima campaña.",
+        "autor": "L. Pérez",
+        "fecha": "2026-03-02"
+      },
       "mediciones": [
-        { "fecha": "2024-04-18", "velCorrosion": 0.18 },
-        { "fecha": "2024-10-22", "velCorrosion": 0.19 },
-        { "fecha": "2025-04-30", "velCorrosion": 0.20 },
-        { "fecha": "2025-11-12", "velCorrosion": 0.18 },
-        { "fecha": "2026-05-02", "velCorrosion": 0.19 }
+        {
+          "fecha": "2024-06-03",
+          "velCorrosion": 0.281
+        },
+        {
+          "fecha": "2024-12-02",
+          "velCorrosion": 0.418
+        },
+        {
+          "fecha": "2025-03-03",
+          "velCorrosion": 0.482
+        },
+        {
+          "fecha": "2025-06-02",
+          "velCorrosion": 0.542
+        },
+        {
+          "fecha": "2025-12-01",
+          "velCorrosion": 0.621
+        },
+        {
+          "fecha": "2026-03-02",
+          "velCorrosion": 0.494
+        }
       ]
     },
     {
       "id": "POZO-006",
-      "pozo": "LC-052",
-      "lat": -38.540,
-      "lon": -68.575,
-      "yacimiento": "Loma Campana",
-      "notas": "Frecuencia de medición incrementada por cambio de operación.",
+      "pozo": "BS-006",
+      "lat": -38.6936,
+      "lon": -68.5133,
+      "yacimiento": "Bandurria Sur",
+      "notas": {
+        "texto": "",
+        "autor": "",
+        "fecha": ""
+      },
       "mediciones": [
-        { "fecha": "2025-03-10", "velCorrosion": 0.22 },
-        { "fecha": "2025-08-15", "velCorrosion": 0.28 },
-        { "fecha": "2026-01-20", "velCorrosion": 0.35 },
-        { "fecha": "2026-04-25", "velCorrosion": 0.41 }
+        {
+          "fecha": "2024-06-03",
+          "velCorrosion": 0.288
+        },
+        {
+          "fecha": "2024-09-02",
+          "velCorrosion": 0.318
+        },
+        {
+          "fecha": "2024-12-02",
+          "velCorrosion": 0.294
+        },
+        {
+          "fecha": "2025-03-03",
+          "velCorrosion": 0.294
+        },
+        {
+          "fecha": "2025-06-02",
+          "velCorrosion": 0.322
+        },
+        {
+          "fecha": "2025-09-01",
+          "velCorrosion": 0.325
+        }
+      ]
+    },
+    {
+      "id": "POZO-007",
+      "pozo": "BS-007",
+      "lat": -38.5631,
+      "lon": -68.7405,
+      "yacimiento": "Bandurria Sur",
+      "notas": {
+        "texto": "",
+        "autor": "",
+        "fecha": ""
+      },
+      "mediciones": [
+        {
+          "fecha": "2024-03-04",
+          "velCorrosion": 0.248
+        },
+        {
+          "fecha": "2024-06-03",
+          "velCorrosion": 0.327
+        },
+        {
+          "fecha": "2025-03-03",
+          "velCorrosion": 0.349
+        },
+        {
+          "fecha": "2025-12-01",
+          "velCorrosion": 0.619
+        }
+      ]
+    },
+    {
+      "id": "POZO-008",
+      "pozo": "BS-008",
+      "lat": -38.7484,
+      "lon": -68.7953,
+      "yacimiento": "Bandurria Sur",
+      "notas": {
+        "texto": "Punto incorporado al plan en última revisión.",
+        "autor": "L. Pérez",
+        "fecha": "2026-03-02"
+      },
+      "mediciones": [
+        {
+          "fecha": "2024-09-02",
+          "velCorrosion": 0.103
+        },
+        {
+          "fecha": "2024-12-02",
+          "velCorrosion": 0.094
+        },
+        {
+          "fecha": "2025-03-03",
+          "velCorrosion": 0.103
+        },
+        {
+          "fecha": "2025-06-02",
+          "velCorrosion": 0.085
+        },
+        {
+          "fecha": "2025-09-01",
+          "velCorrosion": 0.092
+        },
+        {
+          "fecha": "2026-03-02",
+          "velCorrosion": 0.09
+        }
+      ]
+    },
+    {
+      "id": "POZO-009",
+      "pozo": "BS-009",
+      "lat": -38.6197,
+      "lon": -68.6117,
+      "yacimiento": "Bandurria Sur",
+      "notas": {
+        "texto": "Comportamiento estable. Validado contra cupones de pérdida de peso.",
+        "autor": "D. Sosa",
+        "fecha": "2026-03-02"
+      },
+      "mediciones": [
+        {
+          "fecha": "2024-03-04",
+          "velCorrosion": 0.242
+        },
+        {
+          "fecha": "2024-09-02",
+          "velCorrosion": 0.363
+        },
+        {
+          "fecha": "2024-12-02",
+          "velCorrosion": 0.488
+        },
+        {
+          "fecha": "2025-03-03",
+          "velCorrosion": 0.445
+        },
+        {
+          "fecha": "2025-09-01",
+          "velCorrosion": 0.536
+        },
+        {
+          "fecha": "2026-03-02",
+          "velCorrosion": 0.806
+        }
+      ]
+    },
+    {
+      "id": "POZO-010",
+      "pozo": "BS-010",
+      "lat": -38.5951,
+      "lon": -68.552,
+      "yacimiento": "Bandurria Sur",
+      "notas": {
+        "texto": "",
+        "autor": "",
+        "fecha": ""
+      },
+      "mediciones": [
+        {
+          "fecha": "2024-03-04",
+          "velCorrosion": 0.243
+        },
+        {
+          "fecha": "2024-06-03",
+          "velCorrosion": 0.279
+        },
+        {
+          "fecha": "2024-12-02",
+          "velCorrosion": 0.283
+        },
+        {
+          "fecha": "2025-09-01",
+          "velCorrosion": 0.247
+        },
+        {
+          "fecha": "2025-12-01",
+          "velCorrosion": 0.286
+        },
+        {
+          "fecha": "2026-03-02",
+          "velCorrosion": 0.256
+        }
+      ]
+    },
+    {
+      "id": "POZO-011",
+      "pozo": "BS-011",
+      "lat": -38.6984,
+      "lon": -68.4908,
+      "yacimiento": "Bandurria Sur",
+      "notas": {
+        "texto": "",
+        "autor": "",
+        "fecha": ""
+      },
+      "mediciones": [
+        {
+          "fecha": "2024-06-03",
+          "velCorrosion": 0.26
+        },
+        {
+          "fecha": "2025-03-03",
+          "velCorrosion": 0.221
+        },
+        {
+          "fecha": "2026-03-02",
+          "velCorrosion": 0.372
+        }
+      ]
+    },
+    {
+      "id": "POZO-012",
+      "pozo": "BS-012",
+      "lat": -38.8109,
+      "lon": -68.8042,
+      "yacimiento": "Bandurria Sur",
+      "notas": {
+        "texto": "",
+        "autor": "",
+        "fecha": ""
+      },
+      "mediciones": [
+        {
+          "fecha": "2024-03-04",
+          "velCorrosion": 0.302
+        },
+        {
+          "fecha": "2024-06-03",
+          "velCorrosion": 0.278
+        },
+        {
+          "fecha": "2025-03-03",
+          "velCorrosion": 0.284
+        },
+        {
+          "fecha": "2025-12-01",
+          "velCorrosion": 0.285
+        },
+        {
+          "fecha": "2026-03-02",
+          "velCorrosion": 0.303
+        }
+      ]
+    },
+    {
+      "id": "POZO-013",
+      "pozo": "BS-013",
+      "lat": -38.6566,
+      "lon": -68.8294,
+      "yacimiento": "Bandurria Sur",
+      "notas": {
+        "texto": "",
+        "autor": "",
+        "fecha": ""
+      },
+      "mediciones": [
+        {
+          "fecha": "2024-03-04",
+          "velCorrosion": 0.324
+        },
+        {
+          "fecha": "2024-06-03",
+          "velCorrosion": 0.326
+        },
+        {
+          "fecha": "2024-12-02",
+          "velCorrosion": 0.263
+        },
+        {
+          "fecha": "2025-03-03",
+          "velCorrosion": 0.157
+        },
+        {
+          "fecha": "2025-06-02",
+          "velCorrosion": 0.13
+        },
+        {
+          "fecha": "2025-09-01",
+          "velCorrosion": 0.153
+        },
+        {
+          "fecha": "2025-12-01",
+          "velCorrosion": 0.02
+        },
+        {
+          "fecha": "2026-03-02",
+          "velCorrosion": 0.064
+        }
+      ]
+    },
+    {
+      "id": "POZO-014",
+      "pozo": "BS-014",
+      "lat": -38.5881,
+      "lon": -68.5989,
+      "yacimiento": "Bandurria Sur",
+      "notas": {
+        "texto": "",
+        "autor": "",
+        "fecha": ""
+      },
+      "mediciones": [
+        {
+          "fecha": "2024-03-04",
+          "velCorrosion": 0.308
+        },
+        {
+          "fecha": "2024-06-03",
+          "velCorrosion": 0.316
+        },
+        {
+          "fecha": "2024-09-02",
+          "velCorrosion": 0.301
+        },
+        {
+          "fecha": "2024-12-02",
+          "velCorrosion": 0.28
+        },
+        {
+          "fecha": "2025-03-03",
+          "velCorrosion": 0.298
+        },
+        {
+          "fecha": "2025-06-02",
+          "velCorrosion": 0.277
+        },
+        {
+          "fecha": "2025-09-01",
+          "velCorrosion": 0.313
+        },
+        {
+          "fecha": "2025-12-01",
+          "velCorrosion": 0.317
+        },
+        {
+          "fecha": "2026-03-02",
+          "velCorrosion": 0.31
+        }
+      ]
+    },
+    {
+      "id": "POZO-015",
+      "pozo": "BS-015",
+      "lat": -38.7629,
+      "lon": -68.6392,
+      "yacimiento": "Bandurria Sur",
+      "notas": {
+        "texto": "",
+        "autor": "",
+        "fecha": ""
+      },
+      "mediciones": [
+        {
+          "fecha": "2024-03-04",
+          "velCorrosion": 0.181
+        },
+        {
+          "fecha": "2024-06-03",
+          "velCorrosion": 0.19
+        },
+        {
+          "fecha": "2024-09-02",
+          "velCorrosion": 0.179
+        },
+        {
+          "fecha": "2025-03-03",
+          "velCorrosion": 0.163
+        },
+        {
+          "fecha": "2025-09-01",
+          "velCorrosion": 0.164
+        },
+        {
+          "fecha": "2026-03-02",
+          "velCorrosion": 0.172
+        }
+      ]
+    },
+    {
+      "id": "POZO-016",
+      "pozo": "BS-016",
+      "lat": -38.8037,
+      "lon": -68.6913,
+      "yacimiento": "Bandurria Sur",
+      "notas": {
+        "texto": "Tendencia ascendente detectada en último ciclo.",
+        "autor": "F. Liporace",
+        "fecha": "2025-12-01"
+      },
+      "mediciones": [
+        {
+          "fecha": "2024-03-04",
+          "velCorrosion": 0.288
+        },
+        {
+          "fecha": "2024-12-02",
+          "velCorrosion": 0.409
+        },
+        {
+          "fecha": "2025-06-02",
+          "velCorrosion": 0.57
+        },
+        {
+          "fecha": "2025-09-01",
+          "velCorrosion": 0.766
+        },
+        {
+          "fecha": "2025-12-01",
+          "velCorrosion": 0.522
+        }
+      ]
+    },
+    {
+      "id": "POZO-017",
+      "pozo": "BS-017",
+      "lat": -38.6626,
+      "lon": -68.6095,
+      "yacimiento": "Bandurria Sur",
+      "notas": {
+        "texto": "",
+        "autor": "",
+        "fecha": ""
+      },
+      "mediciones": [
+        {
+          "fecha": "2024-06-03",
+          "velCorrosion": 0.561
+        },
+        {
+          "fecha": "2024-09-02",
+          "velCorrosion": 0.52
+        },
+        {
+          "fecha": "2024-12-02",
+          "velCorrosion": 0.508
+        },
+        {
+          "fecha": "2025-06-02",
+          "velCorrosion": 0.391
+        },
+        {
+          "fecha": "2025-09-01",
+          "velCorrosion": 0.358
+        },
+        {
+          "fecha": "2025-12-01",
+          "velCorrosion": 0.335
+        },
+        {
+          "fecha": "2026-03-02",
+          "velCorrosion": 0.264
+        }
+      ]
+    },
+    {
+      "id": "POZO-018",
+      "pozo": "BS-018",
+      "lat": -38.7705,
+      "lon": -68.7434,
+      "yacimiento": "Bandurria Sur",
+      "notas": {
+        "texto": "",
+        "autor": "",
+        "fecha": ""
+      },
+      "mediciones": [
+        {
+          "fecha": "2024-03-04",
+          "velCorrosion": 0.277
+        },
+        {
+          "fecha": "2024-06-03",
+          "velCorrosion": 0.298
+        },
+        {
+          "fecha": "2024-12-02",
+          "velCorrosion": 0.279
+        },
+        {
+          "fecha": "2025-03-03",
+          "velCorrosion": 0.274
+        },
+        {
+          "fecha": "2025-06-02",
+          "velCorrosion": 0.282
+        },
+        {
+          "fecha": "2025-12-01",
+          "velCorrosion": 0.287
+        },
+        {
+          "fecha": "2026-03-02",
+          "velCorrosion": 0.309
+        }
+      ]
+    },
+    {
+      "id": "POZO-019",
+      "pozo": "BS-019",
+      "lat": -38.7894,
+      "lon": -68.8394,
+      "yacimiento": "Bandurria Sur",
+      "notas": {
+        "texto": "",
+        "autor": "",
+        "fecha": ""
+      },
+      "mediciones": [
+        {
+          "fecha": "2024-03-04",
+          "velCorrosion": 0.217
+        },
+        {
+          "fecha": "2024-09-02",
+          "velCorrosion": 0.325
+        },
+        {
+          "fecha": "2024-12-02",
+          "velCorrosion": 0.333
+        },
+        {
+          "fecha": "2025-06-02",
+          "velCorrosion": 0.583
+        },
+        {
+          "fecha": "2025-12-01",
+          "velCorrosion": 0.564
+        }
+      ]
+    },
+    {
+      "id": "POZO-020",
+      "pozo": "BS-020",
+      "lat": -38.761,
+      "lon": -68.7497,
+      "yacimiento": "Bandurria Sur",
+      "notas": {
+        "texto": "",
+        "autor": "",
+        "fecha": ""
+      },
+      "mediciones": [
+        {
+          "fecha": "2024-03-04",
+          "velCorrosion": 0.136
+        },
+        {
+          "fecha": "2024-09-02",
+          "velCorrosion": 0.249
+        },
+        {
+          "fecha": "2024-12-02",
+          "velCorrosion": 0.283
+        },
+        {
+          "fecha": "2025-06-02",
+          "velCorrosion": 0.324
+        },
+        {
+          "fecha": "2026-03-02",
+          "velCorrosion": 0.422
+        }
+      ]
+    },
+    {
+      "id": "POZO-021",
+      "pozo": "BS-021",
+      "lat": -38.767,
+      "lon": -68.7266,
+      "yacimiento": "Bandurria Sur",
+      "notas": {
+        "texto": "",
+        "autor": "",
+        "fecha": ""
+      },
+      "mediciones": [
+        {
+          "fecha": "2024-03-04",
+          "velCorrosion": 0.226
+        },
+        {
+          "fecha": "2024-06-03",
+          "velCorrosion": 0.213
+        },
+        {
+          "fecha": "2025-03-03",
+          "velCorrosion": 0.25
+        },
+        {
+          "fecha": "2025-06-02",
+          "velCorrosion": 0.217
+        },
+        {
+          "fecha": "2025-09-01",
+          "velCorrosion": 0.215
+        },
+        {
+          "fecha": "2025-12-01",
+          "velCorrosion": 0.227
+        },
+        {
+          "fecha": "2026-03-02",
+          "velCorrosion": 0.236
+        }
+      ]
+    },
+    {
+      "id": "POZO-022",
+      "pozo": "BS-022",
+      "lat": -38.5857,
+      "lon": -68.7357,
+      "yacimiento": "Bandurria Sur",
+      "notas": {
+        "texto": "Punto crítico. Requiere intervención antes del próximo ciclo.",
+        "autor": "L. Pérez",
+        "fecha": "2026-03-02"
+      },
+      "mediciones": [
+        {
+          "fecha": "2024-03-04",
+          "velCorrosion": 0.245
+        },
+        {
+          "fecha": "2024-06-03",
+          "velCorrosion": 0.257
+        },
+        {
+          "fecha": "2024-09-02",
+          "velCorrosion": 0.254
+        },
+        {
+          "fecha": "2024-12-02",
+          "velCorrosion": 0.229
+        },
+        {
+          "fecha": "2025-03-03",
+          "velCorrosion": 0.273
+        },
+        {
+          "fecha": "2025-06-02",
+          "velCorrosion": 0.244
+        },
+        {
+          "fecha": "2025-09-01",
+          "velCorrosion": 0.262
+        },
+        {
+          "fecha": "2025-12-01",
+          "velCorrosion": 0.236
+        },
+        {
+          "fecha": "2026-03-02",
+          "velCorrosion": 0.272
+        }
+      ]
+    },
+    {
+      "id": "POZO-023",
+      "pozo": "BS-023",
+      "lat": -38.8485,
+      "lon": -68.5546,
+      "yacimiento": "Bandurria Sur",
+      "notas": {
+        "texto": "Comportamiento estable. Validado contra cupones de pérdida de peso.",
+        "autor": "L. Pérez",
+        "fecha": "2025-12-01"
+      },
+      "mediciones": [
+        {
+          "fecha": "2024-03-04",
+          "velCorrosion": 0.148
+        },
+        {
+          "fecha": "2024-06-03",
+          "velCorrosion": 0.145
+        },
+        {
+          "fecha": "2024-09-02",
+          "velCorrosion": 0.167
+        },
+        {
+          "fecha": "2025-06-02",
+          "velCorrosion": 0.15
+        },
+        {
+          "fecha": "2025-09-01",
+          "velCorrosion": 0.156
+        },
+        {
+          "fecha": "2025-12-01",
+          "velCorrosion": 0.134
+        }
+      ]
+    },
+    {
+      "id": "POZO-024",
+      "pozo": "BS-024",
+      "lat": -38.7952,
+      "lon": -68.8061,
+      "yacimiento": "Bandurria Sur",
+      "notas": {
+        "texto": "Punto incorporado al plan en última revisión.",
+        "autor": "F. Liporace",
+        "fecha": "2025-12-01"
+      },
+      "mediciones": [
+        {
+          "fecha": "2024-09-02",
+          "velCorrosion": 0.223
+        },
+        {
+          "fecha": "2024-12-02",
+          "velCorrosion": 0.205
+        },
+        {
+          "fecha": "2025-06-02",
+          "velCorrosion": 0.222
+        },
+        {
+          "fecha": "2025-09-01",
+          "velCorrosion": 0.201
+        },
+        {
+          "fecha": "2025-12-01",
+          "velCorrosion": 0.226
+        }
+      ]
+    },
+    {
+      "id": "POZO-025",
+      "pozo": "BS-025",
+      "lat": -38.7528,
+      "lon": -68.6458,
+      "yacimiento": "Bandurria Sur",
+      "notas": {
+        "texto": "Variación atípica. Validar metodología en próxima campaña.",
+        "autor": "L. Pérez",
+        "fecha": "2025-12-01"
+      },
+      "mediciones": [
+        {
+          "fecha": "2024-03-04",
+          "velCorrosion": 0.287
+        },
+        {
+          "fecha": "2024-06-03",
+          "velCorrosion": 0.248
+        },
+        {
+          "fecha": "2024-12-02",
+          "velCorrosion": 0.271
+        },
+        {
+          "fecha": "2025-03-03",
+          "velCorrosion": 0.286
+        },
+        {
+          "fecha": "2025-06-02",
+          "velCorrosion": 0.266
+        },
+        {
+          "fecha": "2025-12-01",
+          "velCorrosion": 0.278
+        }
+      ]
+    },
+    {
+      "id": "POZO-026",
+      "pozo": "BS-026",
+      "lat": -38.7664,
+      "lon": -68.6445,
+      "yacimiento": "Bandurria Sur",
+      "notas": {
+        "texto": "",
+        "autor": "",
+        "fecha": ""
+      },
+      "mediciones": [
+        {
+          "fecha": "2024-03-04",
+          "velCorrosion": 0.112
+        },
+        {
+          "fecha": "2024-06-03",
+          "velCorrosion": 0.123
+        },
+        {
+          "fecha": "2024-09-02",
+          "velCorrosion": 0.114
+        },
+        {
+          "fecha": "2025-03-03",
+          "velCorrosion": 0.109
+        },
+        {
+          "fecha": "2025-06-02",
+          "velCorrosion": 0.099
+        },
+        {
+          "fecha": "2025-09-01",
+          "velCorrosion": 0.083
+        },
+        {
+          "fecha": "2025-12-01",
+          "velCorrosion": 0.081
+        }
+      ]
+    },
+    {
+      "id": "POZO-027",
+      "pozo": "BS-027",
+      "lat": -38.7641,
+      "lon": -68.6595,
+      "yacimiento": "Bandurria Sur",
+      "notas": {
+        "texto": "Punto crítico. Requiere intervención antes del próximo ciclo.",
+        "autor": "L. Pérez",
+        "fecha": "2026-03-02"
+      },
+      "mediciones": [
+        {
+          "fecha": "2024-06-03",
+          "velCorrosion": 0.103
+        },
+        {
+          "fecha": "2024-09-02",
+          "velCorrosion": 0.103
+        },
+        {
+          "fecha": "2024-12-02",
+          "velCorrosion": 0.081
+        },
+        {
+          "fecha": "2025-03-03",
+          "velCorrosion": 0.073
+        },
+        {
+          "fecha": "2025-09-01",
+          "velCorrosion": 0.1
+        },
+        {
+          "fecha": "2026-03-02",
+          "velCorrosion": 0.083
+        }
+      ]
+    },
+    {
+      "id": "POZO-028",
+      "pozo": "BS-028",
+      "lat": -38.6065,
+      "lon": -68.5914,
+      "yacimiento": "Bandurria Sur",
+      "notas": {
+        "texto": "",
+        "autor": "",
+        "fecha": ""
+      },
+      "mediciones": [
+        {
+          "fecha": "2024-03-04",
+          "velCorrosion": 0.503
+        },
+        {
+          "fecha": "2024-06-03",
+          "velCorrosion": 0.193
+        },
+        {
+          "fecha": "2024-09-02",
+          "velCorrosion": 0.448
+        },
+        {
+          "fecha": "2024-12-02",
+          "velCorrosion": 0.391
+        },
+        {
+          "fecha": "2025-06-02",
+          "velCorrosion": 0.42
+        },
+        {
+          "fecha": "2025-09-01",
+          "velCorrosion": 0.54
+        },
+        {
+          "fecha": "2026-03-02",
+          "velCorrosion": 0.223
+        }
+      ]
+    },
+    {
+      "id": "POZO-029",
+      "pozo": "BS-029",
+      "lat": -38.8282,
+      "lon": -68.6299,
+      "yacimiento": "Bandurria Sur",
+      "notas": {
+        "texto": "Tendencia ascendente detectada en último ciclo.",
+        "autor": "D. Sosa",
+        "fecha": "2026-03-02"
+      },
+      "mediciones": [
+        {
+          "fecha": "2024-06-03",
+          "velCorrosion": 0.239
+        },
+        {
+          "fecha": "2024-12-02",
+          "velCorrosion": 0.2
+        },
+        {
+          "fecha": "2025-03-03",
+          "velCorrosion": 0.218
+        },
+        {
+          "fecha": "2025-09-01",
+          "velCorrosion": 0.235
+        },
+        {
+          "fecha": "2025-12-01",
+          "velCorrosion": 0.204
+        },
+        {
+          "fecha": "2026-03-02",
+          "velCorrosion": 0.206
+        }
+      ]
+    },
+    {
+      "id": "POZO-030",
+      "pozo": "BS-030",
+      "lat": -38.6864,
+      "lon": -68.5137,
+      "yacimiento": "Bandurria Sur",
+      "notas": {
+        "texto": "",
+        "autor": "",
+        "fecha": ""
+      },
+      "mediciones": [
+        {
+          "fecha": "2024-06-03",
+          "velCorrosion": 0.425
+        },
+        {
+          "fecha": "2024-09-02",
+          "velCorrosion": 0.321
+        },
+        {
+          "fecha": "2024-12-02",
+          "velCorrosion": 0.382
+        },
+        {
+          "fecha": "2025-03-03",
+          "velCorrosion": 0.404
+        },
+        {
+          "fecha": "2025-12-01",
+          "velCorrosion": 0.362
+        }
+      ]
+    },
+    {
+      "id": "POZO-031",
+      "pozo": "BS-031",
+      "lat": -38.776,
+      "lon": -68.7628,
+      "yacimiento": "Bandurria Sur",
+      "notas": {
+        "texto": "",
+        "autor": "",
+        "fecha": ""
+      },
+      "mediciones": [
+        {
+          "fecha": "2024-06-03",
+          "velCorrosion": 0.27
+        },
+        {
+          "fecha": "2024-12-02",
+          "velCorrosion": 0.41
+        },
+        {
+          "fecha": "2025-03-03",
+          "velCorrosion": 0.498
+        },
+        {
+          "fecha": "2025-06-02",
+          "velCorrosion": 0.462
+        },
+        {
+          "fecha": "2025-09-01",
+          "velCorrosion": 0.611
+        },
+        {
+          "fecha": "2026-03-02",
+          "velCorrosion": 0.542
+        }
+      ]
+    },
+    {
+      "id": "POZO-032",
+      "pozo": "BS-032",
+      "lat": -38.6103,
+      "lon": -68.6437,
+      "yacimiento": "Bandurria Sur",
+      "notas": {
+        "texto": "Recomendado aumentar frecuencia por proximidad a umbral crítico.",
+        "autor": "D. Sosa",
+        "fecha": "2025-09-01"
+      },
+      "mediciones": [
+        {
+          "fecha": "2024-03-04",
+          "velCorrosion": 0.297
+        },
+        {
+          "fecha": "2024-06-03",
+          "velCorrosion": 0.364
+        },
+        {
+          "fecha": "2024-09-02",
+          "velCorrosion": 0.33
+        },
+        {
+          "fecha": "2025-03-03",
+          "velCorrosion": 0.446
+        },
+        {
+          "fecha": "2025-09-01",
+          "velCorrosion": 0.642
+        }
+      ]
+    },
+    {
+      "id": "POZO-033",
+      "pozo": "BS-033",
+      "lat": -38.8126,
+      "lon": -68.5423,
+      "yacimiento": "Bandurria Sur",
+      "notas": {
+        "texto": "",
+        "autor": "",
+        "fecha": ""
+      },
+      "mediciones": [
+        {
+          "fecha": "2024-03-04",
+          "velCorrosion": 0.142
+        },
+        {
+          "fecha": "2024-09-02",
+          "velCorrosion": 0.271
+        },
+        {
+          "fecha": "2025-06-02",
+          "velCorrosion": 0.37
+        },
+        {
+          "fecha": "2025-12-01",
+          "velCorrosion": 0.636
+        }
+      ]
+    },
+    {
+      "id": "POZO-034",
+      "pozo": "BS-034",
+      "lat": -38.8078,
+      "lon": -68.7579,
+      "yacimiento": "Bandurria Sur",
+      "notas": {
+        "texto": "Punto crítico. Requiere intervención antes del próximo ciclo.",
+        "autor": "M. González",
+        "fecha": "2026-03-02"
+      },
+      "mediciones": [
+        {
+          "fecha": "2024-06-03",
+          "velCorrosion": 0.111
+        },
+        {
+          "fecha": "2025-03-03",
+          "velCorrosion": 0.112
+        },
+        {
+          "fecha": "2025-06-02",
+          "velCorrosion": 0.071
+        },
+        {
+          "fecha": "2025-12-01",
+          "velCorrosion": 0.081
+        },
+        {
+          "fecha": "2026-03-02",
+          "velCorrosion": 0.09
+        }
+      ]
+    },
+    {
+      "id": "POZO-035",
+      "pozo": "BS-035",
+      "lat": -38.863,
+      "lon": -68.7231,
+      "yacimiento": "Bandurria Sur",
+      "notas": {
+        "texto": "",
+        "autor": "",
+        "fecha": ""
+      },
+      "mediciones": [
+        {
+          "fecha": "2024-09-02",
+          "velCorrosion": 0.291
+        },
+        {
+          "fecha": "2024-12-02",
+          "velCorrosion": 0.34
+        },
+        {
+          "fecha": "2025-03-03",
+          "velCorrosion": 0.403
+        },
+        {
+          "fecha": "2025-09-01",
+          "velCorrosion": 0.586
+        },
+        {
+          "fecha": "2026-03-02",
+          "velCorrosion": 0.638
+        }
+      ]
+    },
+    {
+      "id": "POZO-036",
+      "pozo": "BS-036",
+      "lat": -38.7588,
+      "lon": -68.7575,
+      "yacimiento": "Bandurria Sur",
+      "notas": {
+        "texto": "",
+        "autor": "",
+        "fecha": ""
+      },
+      "mediciones": [
+        {
+          "fecha": "2024-03-04",
+          "velCorrosion": 0.125
+        },
+        {
+          "fecha": "2024-12-02",
+          "velCorrosion": 0.125
+        },
+        {
+          "fecha": "2025-03-03",
+          "velCorrosion": 0.091
+        },
+        {
+          "fecha": "2025-06-02",
+          "velCorrosion": 0.084
+        },
+        {
+          "fecha": "2025-12-01",
+          "velCorrosion": 0.097
+        },
+        {
+          "fecha": "2026-03-02",
+          "velCorrosion": 0.078
+        }
+      ]
+    },
+    {
+      "id": "POZO-037",
+      "pozo": "BS-037",
+      "lat": -38.8553,
+      "lon": -68.8189,
+      "yacimiento": "Bandurria Sur",
+      "notas": {
+        "texto": "",
+        "autor": "",
+        "fecha": ""
+      },
+      "mediciones": [
+        {
+          "fecha": "2024-09-02",
+          "velCorrosion": 0.321
+        },
+        {
+          "fecha": "2025-03-03",
+          "velCorrosion": 0.253
+        },
+        {
+          "fecha": "2025-09-01",
+          "velCorrosion": 0.037
+        },
+        {
+          "fecha": "2026-03-02",
+          "velCorrosion": 0.02
+        }
+      ]
+    },
+    {
+      "id": "POZO-038",
+      "pozo": "BS-038",
+      "lat": -38.8645,
+      "lon": -68.5091,
+      "yacimiento": "Bandurria Sur",
+      "notas": {
+        "texto": "",
+        "autor": "",
+        "fecha": ""
+      },
+      "mediciones": [
+        {
+          "fecha": "2024-03-04",
+          "velCorrosion": 0.207
+        },
+        {
+          "fecha": "2024-06-03",
+          "velCorrosion": 0.245
+        },
+        {
+          "fecha": "2024-09-02",
+          "velCorrosion": 0.217
+        },
+        {
+          "fecha": "2024-12-02",
+          "velCorrosion": 0.229
+        },
+        {
+          "fecha": "2025-06-02",
+          "velCorrosion": 0.201
+        },
+        {
+          "fecha": "2025-09-01",
+          "velCorrosion": 0.248
+        },
+        {
+          "fecha": "2025-12-01",
+          "velCorrosion": 0.231
+        },
+        {
+          "fecha": "2026-03-02",
+          "velCorrosion": 0.243
+        }
       ]
     }
   ]

@@ -5,5 +5,9 @@
   "type": "module",
   "scripts": {
     "build": "node build/build.mjs"
+  },
+  "dependencies": {
+    "jpeg-js": "^0.4.4",
+    "pngjs": "^7.0.0"
   }
 }
