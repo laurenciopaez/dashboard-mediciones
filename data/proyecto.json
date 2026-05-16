@@ -1,0 +1,110 @@
+{
+  "proyecto": {
+    "nombre": "Monitoreo Electroquímico",
+    "yacimiento": "Loma Campana",
+    "cliente": "YPF",
+    "fecha": "2026-05-16",
+    "version": "v1"
+  },
+  "mapa": {
+    "imagen": "mapa.png",
+    "bounds": {
+      "north": -38.50,
+      "south": -38.58,
+      "west": -68.60,
+      "east": -68.45
+    }
+  },
+  "umbralesCriticidad": {
+    "bajo": 0.10,
+    "moderado": 0.30,
+    "critico": 0.50,
+    "unidad": "mm/año"
+  },
+  "puntos": [
+    {
+      "id": "POZO-001",
+      "pozo": "LC-001",
+      "lat": -38.520,
+      "lon": -68.560,
+      "yacimiento": "Loma Campana",
+      "notas": "Pozo de referencia. Monitoreo trimestral según plan 2025.",
+      "mediciones": [
+        { "fecha": "2024-03-12", "velCorrosion": 0.08 },
+        { "fecha": "2024-08-04", "velCorrosion": 0.11 },
+        { "fecha": "2025-02-18", "velCorrosion": 0.14 },
+        { "fecha": "2025-09-21", "velCorrosion": 0.17 },
+        { "fecha": "2026-04-10", "velCorrosion": 0.21 }
+      ]
+    },
+    {
+      "id": "POZO-002",
+      "pozo": "LC-014",
+      "lat": -38.535,
+      "lon": -68.510,
+      "yacimiento": "Loma Campana",
+      "notas": "Inhibidor reformulado en 2025-06. Observar respuesta.",
+      "mediciones": [
+        { "fecha": "2024-01-15", "velCorrosion": 0.42 },
+        { "fecha": "2024-07-02", "velCorrosion": 0.48 },
+        { "fecha": "2025-01-19", "velCorrosion": 0.55 },
+        { "fecha": "2025-07-11", "velCorrosion": 0.39 },
+        { "fecha": "2026-02-22", "velCorrosion": 0.31 }
+      ]
+    },
+    {
+      "id": "POZO-003",
+      "pozo": "LC-027",
+      "lat": -38.555,
+      "lon": -68.540,
+      "yacimiento": "Loma Campana",
+      "notas": "Punto crítico identificado en informe Q1 2026. Requiere intervención.",
+      "mediciones": [
+        { "fecha": "2024-05-20", "velCorrosion": 0.31 },
+        { "fecha": "2024-11-08", "velCorrosion": 0.44 },
+        { "fecha": "2025-05-14", "velCorrosion": 0.58 },
+        { "fecha": "2026-01-09", "velCorrosion": 0.71 }
+      ]
+    },
+    {
+      "id": "POZO-004",
+      "pozo": "LC-033",
+      "lat": -38.512,
+      "lon": -68.490,
+      "yacimiento": "Loma Campana",
+      "notas": "",
+      "mediciones": [
+        { "fecha": "2025-10-05", "velCorrosion": 0.09 }
+      ]
+    },
+    {
+      "id": "POZO-005",
+      "pozo": "LC-041",
+      "lat": -38.565,
+      "lon": -68.475,
+      "yacimiento": "Loma Campana",
+      "notas": "Comportamiento estable. Validado contra cupones de pérdida de peso.",
+      "mediciones": [
+        { "fecha": "2024-04-18", "velCorrosion": 0.18 },
+        { "fecha": "2024-10-22", "velCorrosion": 0.19 },
+        { "fecha": "2025-04-30", "velCorrosion": 0.20 },
+        { "fecha": "2025-11-12", "velCorrosion": 0.18 },
+        { "fecha": "2026-05-02", "velCorrosion": 0.19 }
+      ]
+    },
+    {
+      "id": "POZO-006",
+      "pozo": "LC-052",
+      "lat": -38.540,
+      "lon": -68.575,
+      "yacimiento": "Loma Campana",
+      "notas": "Frecuencia de medición incrementada por cambio de operación.",
+      "mediciones": [
+        { "fecha": "2025-03-10", "velCorrosion": 0.22 },
+        { "fecha": "2025-08-15", "velCorrosion": 0.28 },
+        { "fecha": "2026-01-20", "velCorrosion": 0.35 },
+        { "fecha": "2026-04-25", "velCorrosion": 0.41 }
+      ]
+    }
+  ]
+}

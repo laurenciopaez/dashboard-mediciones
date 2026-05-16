@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//c/Users/laure/.claude/projects/c--Users-laure-OneDrive-Escritorio-dashboard-mediciones/memory/**)",
+      "PowerShell(node --version)",
+      "PowerShell(npm run build)",
+      "PowerShell(Start-Process \"C:\\\\Users\\\\laure\\\\OneDrive\\\\Escritorio\\\\dashboard-mediciones\\\\dist\\\\dashboard-ypf-loma-campana-2026-05-16-v1.html\")"
+    ],
+    "additionalDirectories": [
+      "c:\\Users\\laure\\.claude\\projects\\c--Users-laure-OneDrive-Escritorio-dashboard-mediciones\\memory"
+    ]
+  }
+}

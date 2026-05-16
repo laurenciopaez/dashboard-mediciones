@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>{{TITLE}}</title>
+<style>{{STYLES}}</style>
+</head>
+<body>
+<header class="app-header">
+  <div class="hdr-left">
+    <strong class="hdr-proyecto" data-bind="proyecto.nombre"></strong>
+    <span class="hdr-sep">·</span>
+    <span data-bind="proyecto.yacimiento"></span>
+    <span class="hdr-sep">·</span>
+    <span data-bind="proyecto.fecha"></span>
+    <span class="hdr-sep">·</span>
+    <span data-bind="proyecto.version"></span>
+  </div>
+  <div class="hdr-right">
+    <span class="hdr-cliente" data-bind="proyecto.cliente"></span>
+  </div>
+</header>
+
+<main id="view-map" class="view">
+  <div id="map-stage">
+    <div id="map-zoomer">
+      <img id="map-bg" alt="Mapa del yacimiento">
+      <svg id="points-layer" xmlns="http://www.w3.org/2000/svg"></svg>
+    </div>
+    <div id="map-controls">
+      <button id="zoom-in" title="Acercar">+</button>
+      <button id="zoom-out" title="Alejar">−</button>
+      <button id="zoom-reset" title="Restablecer vista">⤢</button>
+    </div>
+  </div>
+
+  <aside id="side-panel">
+    <div class="panel-fixed-top">
+      <input id="search" type="search" placeholder="Buscar pozo o ID…" autocomplete="off">
+      <div class="filter-group">
+        <label class="filter-label">Período</label>
+        <div class="chips" id="chips-fecha">
+          <button class="chip active" data-fecha="all">Todo</button>
+          <button class="chip" data-fecha="1y">Último año</button>
+          <button class="chip" data-fecha="6m">6 meses</button>
+          <button class="chip" data-fecha="3m">3 meses</button>
+        </div>
+      </div>
+      <div class="filter-group">
+        <label class="filter-label">Criticidad</label>
+        <div class="chips" id="chips-criticidad">
+          <button class="chip active" data-crit="all">Todas</button>
+          <button class="chip crit-critico" data-crit="critico">Crítica</button>
+          <button class="chip crit-moderado" data-crit="moderado">Moderada</button>
+          <button class="chip crit-bajo" data-crit="bajo">Baja</button>
+        </div>
+      </div>
+    </div>
+    <ul id="points-list" class="panel-scroll"></ul>
+    <div class="panel-fixed-bottom">
+      <button id="open-dashboard" class="btn-primary">Ver dashboard completo</button>
+    </div>
+  </aside>
+
+  <div id="point-popover" class="hidden" role="dialog"></div>
+
+  <div class="badge-sintec">SINTEC S.A.</div>
+</main>
+
+<section id="view-detail" class="view hidden">
+  <header class="overlay-header">
+    <button class="btn-back" data-close="detail">← Volver</button>
+    <h2 id="detail-title"></h2>
+  </header>
+  <div class="detail-grid">
+    <div class="detail-left">
+      <h3>Información del punto</h3>
+      <dl id="detail-info"></dl>
+    </div>
+    <div class="detail-right">
+      <div class="chart-card">
+        <h3>Velocidad de corrosión vs. fecha</h3>
+        <canvas id="detail-chart"></canvas>
+        <div id="detail-fit" class="fit-info"></div>
+      </div>
+      <div class="table-card">
+        <div class="table-card-head">
+          <h3>Mediciones</h3>
+          <button id="export-csv" class="btn-secondary">Exportar CSV</button>
+        </div>
+        <table id="detail-table">
+          <thead><tr><th>Fecha</th><th>Vel. corrosión (mm/año)</th></tr></thead>
+          <tbody></tbody>
+        </table>
+        <div class="notes-card">
+          <h4>Notas</h4>
+          <p id="detail-notes"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="view-dashboard" class="view hidden">
+  <header class="overlay-header">
+    <button class="btn-back" data-close="dashboard">← Volver</button>
+    <h2>Dashboard completo</h2>
+  </header>
+  <div class="dashboard-grid">
+    <div class="chart-card">
+      <h3>Mediciones por período</h3>
+      <canvas id="agg-chart-1"></canvas>
+      <p class="chart-caption">Cantidad total de mediciones realizadas, agrupadas por trimestre.</p>
+    </div>
+    <div class="chart-card">
+      <h3>Distribución de criticidad</h3>
+      <canvas id="agg-chart-2"></canvas>
+      <p class="chart-caption">Proporción de puntos en cada categoría de criticidad para el período evaluado.</p>
+    </div>
+    <div class="chart-card">
+      <h3>Puntos con tendencia creciente</h3>
+      <canvas id="agg-chart-3"></canvas>
+      <p class="chart-caption">Puntos cuya regresión lineal indica aumento de la velocidad de corrosión en el tiempo.</p>
+    </div>
+    <div class="chart-card">
+      <h3>Dispersión global</h3>
+      <canvas id="agg-chart-4"></canvas>
+      <p class="chart-caption">Distribución de todas las mediciones del proyecto en el eje temporal.</p>
+    </div>
+  </div>
+</section>
+
+<script>window.__PROYECTO__ = {{DATA_JSON}};</script>
+<script>window.__MAPA_DATA_URI__ = "{{MAP_IMAGE_DATA_URI}}";</script>
+<script>{{CHART_JS}}</script>
+<script>{{PANZOOM_JS}}</script>
+<script>{{APP_JS}}</script>
+</body>
+</html>
