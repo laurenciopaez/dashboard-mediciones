@@ -14,7 +14,9 @@
       "PowerShell($content = Get-Content \"dist\\\\dashboard-ypf-bandurria-sur-2026-05-16-v1.html\" -Raw; \"Linea 958:\"; \\($content -split \"`n\"\\)[957]; \"Linea 959:\"; \\($content -split \"`n\"\\)[958]; \"Linea 960:\"; \\($content -split \"`n\"\\)[959]; \"Linea 961:\"; \\($content -split \"`n\"\\)[960])",
       "PowerShell(npm run build 2>&1)",
       "PowerShell($content = Get-Content \"dist\\\\dashboard-ypf-bandurria-sur-2026-05-16-v1.html\" -Raw; \"Linea 959:\"; \\($content -split \"`n\"\\)[958]; \"Linea 960:\"; \\($content -split \"`n\"\\)[959])",
-      "PowerShell(node data\\\\_mock.mjs)"
+      "PowerShell(node data\\\\_mock.mjs)",
+      "Bash(node -e ' *)",
+      "Bash(node data/_mock.mjs)"
     ],
     "additionalDirectories": [
       "c:\\Users\\laure\\.claude\\projects\\c--Users-laure-OneDrive-Escritorio-dashboard-mediciones\\memory"

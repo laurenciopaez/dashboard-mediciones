@@ -569,9 +569,34 @@ button { cursor: pointer; background: none; border: none; }
   flex: 1; min-height: 0;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 1fr;
+  grid-auto-rows: auto;
+  align-content: start;
   gap: 12px; padding: 16px;
-  overflow: hidden;
+  /* Scroll vertical en desktop: priorizamos que se vean los labels del eje X
+     completos y todas las cards antes que encajar todo en la viewport. */
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+/* Dashboard: la card crece con su contenido. Sacamos el min-height: 0 del
+   chart-card heredado, que en un grid cell permitía que la card fuera más
+   chica que su contenido (el algoritmo de auto-row sizing usaba el min-content
+   = 0 y el row no crecía). Con min-height: auto el row mide el contenido real.
+   El chart-host es content-sized, sin overflow especial — la altura del SVG
+   se decide en JS (dashboardChartHeight) y se la pasa al factory; el host
+   crece, la card crece, el row crece. */
+.dashboard-grid .chart-card {
+  min-height: auto;
+}
+.dashboard-grid .chart-host {
+  flex: none;
+  display: block;
+  height: auto;
+  min-height: auto;
+  overflow: visible;
+}
+.dashboard-grid .donut-row {
+  flex: none;
+  min-height: auto;
 }
 .chart-caption {
   margin-top: 10px;
@@ -635,12 +660,9 @@ button { cursor: pointer; background: none; border: none; }
   .dashboard-kpis { grid-template-columns: repeat(2, 1fr); padding: 12px; }
   .overlay-subhead { padding: 10px 12px; flex-wrap: wrap; gap: 8px; }
 
-  /* Without explicit min-height the chart-host (flex:1) collapses to 0
-     inside an auto-row grid cell, so charts disappear and the grid has no
-     overflow to scroll. The values here also give the bars room to breathe
-     so the y-axis labels don't crowd the bottom dates. */
-  .chart-host { min-height: 300px; }
-  .donut-row { min-height: 220px; flex-wrap: wrap; }
+  /* En mobile el chart-host sigue siendo content-sized; la altura del SVG
+     la decide dashboardChartHeight() en app.js (más alto en touch). */
+  .dashboard-grid .donut-row { flex-wrap: wrap; }
 }
 
 /* Stack donut + legend vertically on very narrow screens where they don't

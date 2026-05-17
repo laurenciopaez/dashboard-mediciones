@@ -1,8 +1,9 @@
 #!/usr/bin/env node
 // Genera un proyecto.json de prueba realista:
-//  - 38 puntos distribuidos en los bounds del yacimiento
+//  - 38 puntos medidos por campaña (fijo), universo de puntos que crece:
+//    C1 = 38 nuevos; C2..C9 = 23 repetidos de la previa (60%) + 15 nuevos (40%).
+//    Tras 9 campañas → 38 + 8·15 = 158 puntos en total.
 //  - 9 campañas (4/año × 2 años + 1 de 2026), lunes representativos
-//  - ~24 puntos medidos por campaña, con ~60% rotación contra la previa
 //  - Mezcla de comportamientos: estable / mejorando / empeorando / errático
 //
 // Salida: data/proyecto.json (sobreescribe).
@@ -16,14 +17,15 @@ const HERE = dirname(fileURLToPath(import.meta.url));
 
 // ───── Parámetros del mock ─────
 const BOUNDS = { north: -38.55, south: -38.88, west: -68.85, east: -68.45 };
-const NUM_POINTS = 38;
 const CAMPAIGNS = [
   '2024-03-04', '2024-06-03', '2024-09-02', '2024-12-02',
   '2025-03-03', '2025-06-02', '2025-09-01', '2025-12-01',
   '2026-03-02',
 ];
-const CAMPAIGN_SIZE_RANGE = [22, 28];   // cantidad de puntos medidos por campaña
+const CAMPAIGN_SIZE = 38;               // puntos medidos por campaña (fijo)
 const REPEAT_RATIO = 0.6;               // % que se repite contra la previa
+const REPEAT_PER_CAMPAIGN = Math.round(CAMPAIGN_SIZE * REPEAT_RATIO);  // 23
+const NEW_PER_CAMPAIGN = CAMPAIGN_SIZE - REPEAT_PER_CAMPAIGN;          // 15
 const PEOPLE = ['M. González', 'F. Liporace', 'D. Sosa', 'L. Pérez'];
 const NOTE_RATE = 0.32;                 // % de puntos con notas
 const TRAITS = [
@@ -65,69 +67,75 @@ function rWeighted(opts) {
   return opts[opts.length - 1][0];
 }
 
-// ───── Construir el pool de puntos ─────
+// ───── Construcción incremental: el universo de puntos crece campaña a campaña ─────
+//
+// C1: se crean 38 puntos nuevos y se miden todos.
+// C2..Cn: se eligen REPEAT_PER_CAMPAIGN (23) puntos al azar de la campaña previa
+//          y se crean NEW_PER_CAMPAIGN (15) puntos nuevos. Total por campaña = 38.
+//
+// El universo nunca se contrae — un punto introducido en C5 sigue existiendo
+// aunque no vuelva a medirse en C6+. Esto refleja el caso real: a veces se
+// suman puntos al plan y otros se discontinúan, pero todos forman parte del
+// histórico del proyecto.
 const points = [];
-for (let i = 0; i < NUM_POINTS; i++) {
-  const id = `POZO-${String(i + 1).padStart(3, '0')}`;
-  const pozo = `BS-${String(i + 1).padStart(3, '0')}`;
+let nextIdx = 0;
+
+function createPoint() {
+  const idx = nextIdx++;
+  const id = `POZO-${String(idx + 1).padStart(3, '0')}`;
+  const pozo = `BS-${String(idx + 1).padStart(3, '0')}`;
   // Coordenadas con jitter para que no formen una grilla
   const lat = +rRand(BOUNDS.south + 0.005, BOUNDS.north - 0.005).toFixed(4);
   const lon = +rRand(BOUNDS.west + 0.005, BOUNDS.east - 0.005).toFixed(4);
   const trait = rWeighted(TRAITS);
-  // Baseline acorde al trait
   let baseVel;
   if (trait === 'estable') baseVel = rRand(0.08, 0.32);
-  else if (trait === 'mejorando') baseVel = rRand(0.30, 0.55);  // arranca alto, baja
-  else if (trait === 'empeorando') baseVel = rRand(0.10, 0.30); // arranca medio, sube
-  else baseVel = rRand(0.15, 0.40);                              // errático
-  points.push({ id, pozo, lat, lon, trait, baseVel, mediciones: [], firstCampaign: -1 });
+  else if (trait === 'mejorando') baseVel = rRand(0.30, 0.55);
+  else if (trait === 'empeorando') baseVel = rRand(0.10, 0.30);
+  else baseVel = rRand(0.15, 0.40);
+  const p = { id, pozo, lat, lon, trait, baseVel, mediciones: [], firstCampaign: -1 };
+  points.push(p);
+  return p;
 }
 
-// ───── Selección por campaña con rotación 60/40 ─────
-let prevSet = new Set();
+function measure(point, ci, campaign) {
+  if (point.firstCampaign < 0) point.firstCampaign = ci;
+  const step = ci - point.firstCampaign;
+  let vel;
+  if (point.trait === 'estable') {
+    vel = point.baseVel + rRand(-0.025, 0.025);
+  } else if (point.trait === 'mejorando') {
+    vel = point.baseVel - step * rRand(0.025, 0.05) + rRand(-0.02, 0.02);
+  } else if (point.trait === 'empeorando') {
+    vel = point.baseVel + step * rRand(0.03, 0.08) + rRand(-0.02, 0.02);
+  } else {
+    vel = point.baseVel + rRand(-0.18, 0.22);
+  }
+  vel = Math.max(0.02, Math.min(0.95, vel));
+  point.mediciones.push({ fecha: campaign, velCorrosion: +vel.toFixed(3) });
+}
+
+let prevSelected = [];  // puntos medidos en la campaña previa
 for (let ci = 0; ci < CAMPAIGNS.length; ci++) {
   const campaign = CAMPAIGNS[ci];
-  const target = rInt(CAMPAIGN_SIZE_RANGE[0], CAMPAIGN_SIZE_RANGE[1]);
-  const wantRepeats = Math.round(target * REPEAT_RATIO);
+  const selected = [];
 
-  // Toma % de la campaña previa
-  const prevArr = [...prevSet];
-  shuffle(prevArr);
-  const repeats = prevArr.slice(0, Math.min(wantRepeats, prevArr.length));
-
-  // Completa con puntos NO incluidos en la previa
-  const others = points.filter(p => !prevSet.has(p.id)).map(p => p.id);
-  shuffle(others);
-  const needed = target - repeats.length;
-  const newOnes = others.slice(0, needed);
-
-  const selected = new Set([...repeats, ...newOnes]);
-
-  // Si todavía falta (caso edge: pocas opciones), rellena
-  if (selected.size < target) {
-    const rest = points.filter(p => !selected.has(p.id)).map(p => p.id);
-    shuffle(rest);
-    for (const id of rest.slice(0, target - selected.size)) selected.add(id);
+  if (ci === 0) {
+    // Primera campaña: 38 puntos completamente nuevos.
+    for (let i = 0; i < CAMPAIGN_SIZE; i++) selected.push(createPoint());
+  } else {
+    // 23 repetidos al azar de la campaña previa.
+    const prevShuffled = [...prevSelected];
+    shuffle(prevShuffled);
+    const repeats = prevShuffled.slice(0, Math.min(REPEAT_PER_CAMPAIGN, prevShuffled.length));
+    selected.push(...repeats);
+    // 15 puntos nuevos al universo (cualquier déficit se compensa con extras nuevos).
+    const newCount = CAMPAIGN_SIZE - selected.length;
+    for (let i = 0; i < newCount; i++) selected.push(createPoint());
   }
 
-  for (const point of points) {
-    if (!selected.has(point.id)) continue;
-    if (point.firstCampaign < 0) point.firstCampaign = ci;
-    const step = ci - point.firstCampaign;
-    let vel;
-    if (point.trait === 'estable') {
-      vel = point.baseVel + rRand(-0.025, 0.025);
-    } else if (point.trait === 'mejorando') {
-      vel = point.baseVel - step * rRand(0.025, 0.05) + rRand(-0.02, 0.02);
-    } else if (point.trait === 'empeorando') {
-      vel = point.baseVel + step * rRand(0.03, 0.08) + rRand(-0.02, 0.02);
-    } else {
-      vel = point.baseVel + rRand(-0.18, 0.22);
-    }
-    vel = Math.max(0.02, Math.min(0.95, vel));
-    point.mediciones.push({ fecha: campaign, velCorrosion: +vel.toFixed(3) });
-  }
-  prevSet = selected;
+  for (const p of selected) measure(p, ci, campaign);
+  prevSelected = selected;
 }
 
 function shuffle(arr) {
@@ -153,7 +161,7 @@ const histVelPromedio = histLastVels.length
 const project = {
   proyecto: {
     nombre: 'Monitoreo Electroquímico',
-    yacimiento: 'Bandurria Sur',
+    yacimiento: 'Loma la Lata y Sierra Barrosa',
     cliente: 'YPF',
     fecha: '2026-05-16',
     version: 'v1',

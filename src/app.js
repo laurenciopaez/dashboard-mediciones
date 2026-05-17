@@ -586,7 +586,7 @@
         ring.dataset.baseR = '22';
         g.appendChild(ring);
       }
-      const baseR = isSelected ? 9 : 7;
+      const baseR = isSelected ? 6 : 5;
       const circle = svgEl('circle', {
         cx: x, cy: y, r: baseR * k,
         class: `point point-fill ${stats.crit}`,
@@ -911,13 +911,25 @@
     URL.revokeObjectURL(url);
   }
 
-  // Replace host SVG sized to container
-  function drawIntoHost(host, factory) {
+  // Replace host SVG sized to container.
+  // forceHeight: pass an explicit pixel height when the host doesn't have a
+  // reliable rendered height yet (e.g., dashboard charts in cards whose row
+  // hasn't laid out). The host will grow to match the SVG via content sizing.
+  function drawIntoHost(host, factory, forceHeight) {
     const rect = host.getBoundingClientRect();
     const w = Math.max(200, Math.floor(rect.width));
-    const h = Math.max(120, Math.floor(rect.height));
+    const h = forceHeight != null
+      ? forceHeight
+      : Math.max(120, Math.floor(rect.height));
     host.innerHTML = '';
     host.appendChild(factory(w, h));
+  }
+
+  // Dashboard chart canvas height. Bigger on touch so the bars don't crowd
+  // the X labels. We use a fixed pixel size and let the chart-host grow to
+  // fit, instead of measuring an unreliable rect.height inside a flex grid.
+  function dashboardChartHeight() {
+    return window.matchMedia('(max-width: 900px)').matches ? 320 : 260;
   }
 
   // ---------- Dashboard view ----------
@@ -1040,11 +1052,16 @@
 
     showView('dashboard');
 
-    // Charts drawn after layout so they measure their real host size.
+    // Charts drawn after layout so they measure their real host width.
+    // Height is forced via dashboardChartHeight() — see drawIntoHost.
+    // minBarSlot: 0 hace que los bars caben en el ancho del host (sin overflow
+    // horizontal). Si más adelante hay muchísimas campañas y se aprietan,
+    // subir minBarSlot y reactivar overflow-x: auto en .dashboard-grid .chart-host.
     requestAnimationFrame(() => {
-      drawIntoHost($('#agg-stacked-host'), (w, h) => stackedBarChart({ data: stackedData, width: w, height: h }));
-      drawIntoHost($('#agg-campaign-host'), (w, h) => barChart({ data: campaignBarData, width: w, height: h, valueFormat: (v) => Math.round(v).toString() }));
-      drawIntoHost($('#agg-global-host'), (w, h) => trendChart({ stats: globalStats, width: w, height: h, showZones: true, showForecast: false }));
+      const dh = dashboardChartHeight();
+      drawIntoHost($('#agg-stacked-host'), (w, h) => stackedBarChart({ data: stackedData, width: w, height: h, minBarSlot: 0 }), dh);
+      drawIntoHost($('#agg-campaign-host'), (w, h) => barChart({ data: campaignBarData, width: w, height: h, valueFormat: (v) => Math.round(v).toString(), minBarSlot: 0 }), dh);
+      drawIntoHost($('#agg-global-host'), (w, h) => trendChart({ stats: globalStats, width: w, height: h, showZones: true, showForecast: false }), dh);
     });
   }
 
